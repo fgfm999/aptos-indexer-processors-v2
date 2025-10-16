@@ -4,7 +4,7 @@ use aptos_indexer_processor_sdk::{
     aptos_indexer_transaction_stream::TransactionStreamConfig,
     common_steps::{TransactionStreamStep, VersionTrackerStep, DEFAULT_UPDATE_PROCESSOR_STATUS_SECS},
     postgres::utils::checkpoint::PostgresChainIdChecker,
-    postgres::utils::database::{new_db_pool, run_migrations, ArcDbPool},
+    postgres::utils::database::{new_db_pool, ArcDbPool},
     traits::IntoRunnableStep,
     traits::processor_trait::ProcessorTrait,
     utils::chain_id_check::check_or_update_chain_id
@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 use tracing::{debug, info};
 use crate::{
     processors::custom::custom_extractor::CustomExtractor,
-    MIGRATIONS,
     config::processor_config::ProcessorConfig,
     config::indexer_processor_config::IndexerProcessorConfig,
     config::db_config::DbConfig,
