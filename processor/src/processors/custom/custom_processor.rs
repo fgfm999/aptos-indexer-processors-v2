@@ -85,14 +85,14 @@ impl ProcessorTrait for CustomProcessor {
     async fn run_processor(&self) -> anyhow::Result<()> {
         // Implement your custom processing logic here
         // Run migrations
-        if let DbConfig::PostgresConfig(ref postgres_config) = self.config.db_config {
-            run_migrations(
-                postgres_config.connection_string.clone(),
-                self.db_pool.clone(),
-                MIGRATIONS,
-            )
-                .await;
-        }
+        // if let DbConfig::PostgresConfig(ref postgres_config) = self.config.db_config {
+        //     run_migrations(
+        //         postgres_config.connection_string.clone(),
+        //         self.db_pool.clone(),
+        //         MIGRATIONS,
+        //     )
+        //         .await;
+        // }
 
         //  Merge the starting version from config and the latest processed version from the DB
         let (starting_version, ending_version) = (
@@ -116,6 +116,10 @@ impl ProcessorTrait for CustomProcessor {
                 ))
             },
         };
+        info!(
+            "Starting CustomProcessor with config {:?}",
+            processor_config
+        );
         let channel_size = processor_config.channel_size;
 
         // Define processor steps
