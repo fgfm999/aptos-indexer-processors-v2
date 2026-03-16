@@ -2,8 +2,6 @@ use crate::processors::custom::custom_processor::CustomProcessorConfig;
 use crate::{
     processors::default::default_storer::insert_current_table_items_query,
     processors::default::models::table_items::PostgresCurrentTableItem,
-    processors::events::events_model::PostgresEvent,
-    processors::events::events_storer::insert_events_query
 };
 use ahash::AHashMap;
 use anyhow::Result;
@@ -14,6 +12,15 @@ use aptos_indexer_processor_sdk::{
     utils::errors::ProcessorError,
 };
 use async_trait::async_trait;
+use crate::processors::custom::models::event::PostgresEvent;
+
+use crate::schema;
+use diesel::{
+    pg::{upsert::excluded, Pg},
+    query_builder::QueryFragment,
+    ExpressionMethods,
+};
+
 
 pub struct CustomStorer
 where
@@ -89,3 +96,17 @@ impl NamedStep for CustomStorer {
 }
 
 
+pub fn insert_events_query(
+    items_to_insert: Vec<PostgresEvent>,
+) -> impl QueryFragment<Pg> + diesel::query_builder::QueryId + Send {
+    use schema::events::dsl::*;
+
+    diesel::insert_into(schema::events::table)
+        .values(items_to_insert)
+        .on_conflict((transaction_version, event_index))
+        .do_update()
+        .set((
+            inserted_at.eq(excluded(inserted_at)),
+            indexed_type.eq(excluded(indexed_type)),
+        ))
+}

@@ -2,7 +2,6 @@ use crate::processors::default::models::table_items::{
     CurrentTableItem, PostgresCurrentTableItem,
     TableItem,
 };
-use crate::processors::events::events_model::PostgresEvent;
 use ahash::{AHashMap, AHashSet};
 use aptos_indexer_processor_sdk::{
     aptos_protos::transaction::v1::Transaction,
@@ -12,8 +11,7 @@ use aptos_indexer_processor_sdk::{
     aptos_protos::transaction::v1::write_set_change::Change as WriteSetChangeEnum
 };
 use async_trait::async_trait;
-
-use crate::processors::events::parse_events;
+use crate::processors::custom::models::event::{PostgresEvent, parse_events};
 
 pub struct CustomExtractor
 where
