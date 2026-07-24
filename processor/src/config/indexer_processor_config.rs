@@ -39,6 +39,7 @@ use aptos_indexer_processor_sdk::{
     traits::processor_trait::ProcessorTrait,
 };
 use serde::{Deserialize, Serialize};
+use crate::processors::custom::custom_processor::CustomProcessor;
 
 pub const QUERY_DEFAULT_RETRIES: u32 = 5;
 pub const QUERY_DEFAULT_RETRY_DELAY_MS: u64 = 500;
@@ -160,6 +161,11 @@ impl RunnableConfig for IndexerProcessorConfig {
             ProcessorConfig::ParquetObjectsProcessor(_) => {
                 let parquet_objects_processor = ParquetObjectsProcessor::new(self.clone()).await?;
                 parquet_objects_processor.run_processor().await
+            },
+
+            ProcessorConfig::CustomProcessor(_) => {
+                let custom_processor = CustomProcessor::new(self.clone()).await?;
+                custom_processor.run_processor().await
             },
         }
     }

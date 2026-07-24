@@ -1,0 +1,51 @@
+health_check_port: 8085
+server_config:
+    processor_config:
+        type: "custom_processor"
+        target_events: [
+            "0x9770fa9c725cbd97eb50b2be5f7416efdfd1f1554beb0750d4dae4c64e860da3::profile::SyncProfileDepositEvent", # Aries
+            "0x9770fa9c725cbd97eb50b2be5f7416efdfd1f1554beb0750d4dae4c64e860da3::profile::SyncProfileBorrowEvent", # Aries
+            "0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::lending::SupplyEvent", # Echelon
+            "0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::lending::BorrowEvent", # Echelon
+            "0x2fe576faa841347a9b1b32c869685deb75a15e3f62dfe37cbd6d52cc403a16f6::pool::LendEvent", # Joule
+            "0x68476f9d437e3f32fd262ba898b5e3ee0a23a1d586a6cf29a28add35f253f6f7::lending_pool::Deposit", # Meso
+            "0x68476f9d437e3f32fd262ba898b5e3ee0a23a1d586a6cf29a28add35f253f6f7::lending_pool::Borrow", # Meso
+          # liquidation
+            "0xc727553dd5019c4887581f0a89dca9c8ea400116d70e9da7164897812c6646e::pool_event::LiquidatePosition", # Thetis
+            "0x68476f9d437e3f32fd262ba898b5e3ee0a23a1d586a6cf29a28add35f253f6f7::lending_pool::Liquidate",  # Meso
+            "0xc6bc659f1649553c1a3fa05d9727433dc03843baac29473c817d06d39e7621ba::lending::LiquidateEvent",  # Echelon
+            "0x2fe576faa841347a9b1b32c869685deb75a15e3f62dfe37cbd6d52cc403a16f6::pool::LiquidationEvent",   # Joule
+            "0xfa69897532f069bc0806868eaeec3328727d90c0cec710a17dde327e0bfab44f::pool::PoolLiquidation",   # Agdex
+
+          # Aptrate SendGasEvent
+            "0x0051bae01ba782c1cefe443fbed613296936332872c5f958ba55da25fbdc93eb::events::SendGasEvent",
+            "0x51bae01ba782c1cefe443fbed613296936332872c5f958ba55da25fbdc93eb::events::SendGasEvent",
+
+          # AAVE
+            "0x39ddcd9e1a39fa14f25e3f9ec8a86074d05cc0881cbf667df8a6ee70942016fb::supply_logic::Supply",
+            "0x39ddcd9e1a39fa14f25e3f9ec8a86074d05cc0881cbf667df8a6ee70942016fb::liquidation_logic::LiquidationCall"
+        ]
+        target_prefix_events: [
+            # Thala
+            "0x6f986d146e4a90b828d8c12c14b6f4e003fdff11a8eecceceb63744363eaac01::vault::LiquidationEvent",
+            "0x6f986d146e4a90b828d8c12c14b6f4e003fdff11a8eecceceb63744363eaac01::vault::DepositEvent",
+            # Aries
+            "0x9770fa9c725cbd97eb50b2be5f7416efdfd1f1554beb0750d4dae4c64e860da3::controller::LiquidateEvent",
+        ]
+
+    transaction_stream_config:
+        indexer_grpc_data_service_address: "https://grpc.mainnet.aptoslabs.com:443"
+        #indexer_grpc_data_service_address: "http://127.0.0.1:50053"
+        starting_version: 4601231168
+        auth_token: ""
+        request_name_header: "custom-processor"
+        transaction_filter:
+            type: "TransactionRootFilter"
+            success: true
+            txn_type: 4
+    db_config:
+        type: "postgres_config"
+        connection_string: postgres://postgres:11111111@127.0.0.1:5432/aptos_indexer
+    processor_mode:
+        type: "default"
+        initial_starting_version: 4600690273r

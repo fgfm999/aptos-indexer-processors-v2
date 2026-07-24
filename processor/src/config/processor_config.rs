@@ -64,6 +64,7 @@ use crate::{
 use ahash::AHashMap;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
+use crate::processors::custom::custom_processor::CustomProcessorConfig;
 
 /// This enum captures the configs for all the different processors that are defined.
 ///
@@ -113,6 +114,7 @@ pub enum ProcessorConfig {
     GasFeeProcessor(DefaultProcessorConfig),
     // Event file processor (GCS-based, no DB)
     EventFileProcessor(EventFileProcessorConfig),
+    CustomProcessor(CustomProcessorConfig),
     // ParquetProcessor
     ParquetDefaultProcessor(ParquetDefaultProcessorConfig),
     ParquetObjectsProcessor(ParquetDefaultProcessorConfig),
